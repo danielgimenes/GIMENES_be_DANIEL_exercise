@@ -1,6 +1,7 @@
 package com.ecore.roles.service;
 
 import com.ecore.roles.exception.ResourceNotFoundException;
+import com.ecore.roles.model.Membership;
 import com.ecore.roles.model.Role;
 import com.ecore.roles.repository.MembershipRepository;
 import com.ecore.roles.repository.RoleRepository;
@@ -13,8 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.ecore.roles.utils.TestData.DEVELOPER_ROLE;
-import static com.ecore.roles.utils.TestData.UUID_1;
+import static com.ecore.roles.utils.TestData.*;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,9 +32,6 @@ class RolesServiceTest {
 
     @Mock
     private MembershipRepository membershipRepository;
-
-    @Mock
-    private MembershipsService membershipsService;
 
     @Test
     public void shouldCreateRole() {
@@ -70,5 +67,26 @@ class RolesServiceTest {
                 () -> rolesService.GetRole(UUID_1));
 
         assertEquals(format("Role %s not found", UUID_1), exception.getMessage());
+    }
+
+    @Test
+    public void shouldGetRoleByUserIdAndTeamId() {
+        Membership expectedMembership = DEFAULT_MEMBERSHIP();
+        when(membershipRepository.findByUserIdAndTeamId(expectedMembership.getUserId(), expectedMembership.getTeamId()))
+                .thenReturn(Optional.of(expectedMembership));
+
+        Role role = rolesService.searchRole(expectedMembership.getUserId(), expectedMembership.getTeamId());
+
+        assertEquals(expectedMembership.getRole(), role);
+    }
+
+    @Test
+    public void shouldFailToGetRoleByUserIdAndTeamIdWhenMembershipNotFound() {
+        Membership expectedMembership = DEFAULT_MEMBERSHIP();
+        when(membershipRepository.findByUserIdAndTeamId(expectedMembership.getUserId(), expectedMembership.getTeamId()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class,
+                () -> rolesService.searchRole(expectedMembership.getUserId(), expectedMembership.getTeamId()));
     }
 }
