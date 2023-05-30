@@ -27,8 +27,14 @@ public class TestData {
     public static final UUID ORDINARY_CORAL_LYNX_TEAM_UUID =
             UUID.fromString("7676a4bf-adfe-415c-941b-1739af07039b");
 
+    public static final UUID SECOND_TEAM_UUID =
+            UUID.fromString("a32c0d94-af74-4607-929c-817c82c0c67a");
+
     public static final UUID DEFAULT_MEMBERSHIP_UUID =
             UUID.fromString("98de61a0-b9e3-11ec-8422-0242ac120002");
+
+    public static final UUID SECOND_MEMBERSHIP_UUID =
+            UUID.fromString("2efb3ae7-af33-4835-86e6-f4d8b95deb26");
 
     public static Role DEVELOPER_ROLE() {
         return Role.builder()
@@ -70,7 +76,7 @@ public class TestData {
 
     public static Team SECOND_TEAM() {
         return Team.builder()
-                .id(ORDINARY_CORAL_LYNX_TEAM_UUID)
+                .id(SECOND_TEAM_UUID)
                 .teamLeadId(SECOND_USER_UUID)
                 .teamMemberIds(List.of(UUID_2, UUID_3))
                 .name("Another Team").build();
@@ -107,6 +113,15 @@ public class TestData {
                 .role(DEVELOPER_ROLE())
                 .userId(GIANNI_USER_UUID)
                 .teamId(ORDINARY_CORAL_LYNX_TEAM_UUID)
+                .build();
+    }
+
+    public static Membership SECOND_MEMBERSHIP() {
+        return Membership.builder()
+                .id(SECOND_MEMBERSHIP_UUID)
+                .role(DEVELOPER_ROLE())
+                .userId(SECOND_USER_UUID)
+                .teamId(SECOND_TEAM_UUID)
                 .build();
     }
 

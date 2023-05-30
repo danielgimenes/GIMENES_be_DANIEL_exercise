@@ -12,14 +12,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static com.ecore.roles.utils.TestData.*;
 import static java.lang.String.format;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,7 +52,24 @@ class RolesServiceTest {
     }
 
     @Test
-    public void shouldReturnRoleWhenRoleIdExists() {
+    void shouldGetRoles() {
+        List<Role> roles = List.of(DEVELOPER_ROLE(), PRODUCT_OWNER_ROLE());
+        when(roleRepository.findAll())
+                .thenReturn(roles);
+
+        assertEquals(roles, rolesService.getRoles());
+    }
+
+    @Test
+    void shouldGetRolesWhenThereAreNone() {
+        when(roleRepository.findAll())
+                .thenReturn(null);
+
+        assertNull(rolesService.getRoles());
+    }
+
+    @Test
+    public void shouldGetRoleWhenRoleIdExists() {
         Role developerRole = DEVELOPER_ROLE();
         when(roleRepository.findById(developerRole.getId())).thenReturn(Optional.of(developerRole));
 

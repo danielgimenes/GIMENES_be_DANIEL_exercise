@@ -3,6 +3,7 @@ package com.ecore.roles.service;
 import com.ecore.roles.exception.InvalidArgumentException;
 import com.ecore.roles.exception.ResourceExistsException;
 import com.ecore.roles.model.Membership;
+import com.ecore.roles.model.Role;
 import com.ecore.roles.repository.MembershipRepository;
 import com.ecore.roles.repository.RoleRepository;
 import com.ecore.roles.service.impl.MembershipsServiceImpl;
@@ -12,12 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.ecore.roles.utils.TestData.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
@@ -36,6 +37,30 @@ class MembershipsServiceTest {
     private UsersService usersService;
     @Mock
     private TeamsService teamsService;
+
+    @Test
+    void shouldGetMemberships() {
+        List<Membership> memberships = List.of(DEFAULT_MEMBERSHIP(), SECOND_MEMBERSHIP());
+        when(membershipRepository.findByRoleId(DEVELOPER_ROLE_UUID))
+                .thenReturn(memberships);
+
+        assertEquals(memberships, membershipsService.getMemberships(DEVELOPER_ROLE_UUID));
+    }
+
+    @Test
+    void shouldGetMembershipsWhenThereAreNone() {
+        when(membershipRepository.findByRoleId(DEVELOPER_ROLE_UUID))
+                .thenReturn(null);
+
+        assertNull(membershipsService.getMemberships(DEVELOPER_ROLE_UUID));
+    }
+
+    @Test
+    public void shouldFailToGetMembershipsWhenRoleIdIsNull() {
+        //noinspection DataFlowIssue
+        assertThrows(NullPointerException.class,
+                () -> membershipsService.getMemberships(null));
+    }
 
     @Test
     public void shouldCreateMembership() {
@@ -100,13 +125,6 @@ class MembershipsServiceTest {
         verify(roleRepository, times(0)).getById(any());
         verify(usersService, times(0)).getUser(any());
         verify(teamsService, times(0)).getTeam(any());
-    }
-
-    @Test
-    public void shouldFailToGetMembershipsWhenRoleIdIsNull() {
-        //noinspection DataFlowIssue
-        assertThrows(NullPointerException.class,
-                () -> membershipsService.getMemberships(null));
     }
 
 }
