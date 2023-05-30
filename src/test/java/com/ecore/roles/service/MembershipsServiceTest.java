@@ -14,8 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.ecore.roles.utils.TestData.DEFAULT_MEMBERSHIP;
-import static com.ecore.roles.utils.TestData.DEVELOPER_ROLE;
+import static com.ecore.roles.utils.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,6 +48,9 @@ class MembershipsServiceTest {
         when(membershipRepository
                 .save(expectedMembership))
                         .thenReturn(expectedMembership);
+        when(teamsService
+                .isUserPartOfTeam(expectedMembership.getUserId(), expectedMembership.getTeamId()))
+                .thenReturn(true);
 
         Membership actualMembership = membershipsService.assignRoleToMembership(expectedMembership);
 
@@ -66,6 +68,11 @@ class MembershipsServiceTest {
     @Test
     public void shouldFailToCreateMembershipWhenItExists() {
         Membership expectedMembership = DEFAULT_MEMBERSHIP();
+        when(roleRepository.findById(expectedMembership.getRole().getId()))
+                .thenReturn(Optional.ofNullable(expectedMembership.getRole()));
+        when(teamsService
+                .isUserPartOfTeam(expectedMembership.getUserId(), expectedMembership.getTeamId()))
+                .thenReturn(true);
         when(membershipRepository.findByUserIdAndTeamId(expectedMembership.getUserId(),
                 expectedMembership.getTeamId()))
                         .thenReturn(Optional.of(expectedMembership));
