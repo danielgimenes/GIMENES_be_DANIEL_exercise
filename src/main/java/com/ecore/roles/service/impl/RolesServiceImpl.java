@@ -57,8 +57,8 @@ public class RolesServiceImpl implements RolesService {
     public Role searchRole(UUID userId, UUID teamId) throws ResourceNotFoundException {
         return Optional.ofNullable(
                 membershipRepository.findByUserIdAndTeamId(userId, teamId)
-                .orElseThrow(() -> new ResourceNotFoundException(Membership.class))
-                .getRole()
-               ).orElseThrow(() -> new ResourceNotFoundException(Role.class));
+                        .orElseThrow(() -> new ResourceNotFoundException(Membership.class))
+                        .getRole())
+                .orElseThrow(() -> new ResourceNotFoundException(Role.class));
     }
 }

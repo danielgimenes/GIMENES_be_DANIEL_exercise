@@ -3,7 +3,6 @@ package com.ecore.roles.service;
 import com.ecore.roles.exception.InvalidArgumentException;
 import com.ecore.roles.exception.ResourceExistsException;
 import com.ecore.roles.model.Membership;
-import com.ecore.roles.model.Role;
 import com.ecore.roles.repository.MembershipRepository;
 import com.ecore.roles.repository.RoleRepository;
 import com.ecore.roles.service.impl.MembershipsServiceImpl;
@@ -15,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.ecore.roles.utils.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,7 +55,7 @@ class MembershipsServiceTest {
 
     @Test
     public void shouldFailToGetMembershipsWhenRoleIdIsNull() {
-        //noinspection DataFlowIssue
+        // noinspection DataFlowIssue
         assertThrows(NullPointerException.class,
                 () -> membershipsService.getMemberships(null));
     }
@@ -75,7 +73,7 @@ class MembershipsServiceTest {
                         .thenReturn(expectedMembership);
         when(teamsService
                 .isUserPartOfTeam(expectedMembership.getUserId(), expectedMembership.getTeamId()))
-                .thenReturn(true);
+                        .thenReturn(true);
 
         Membership actualMembership = membershipsService.assignRoleToMembership(expectedMembership);
 
@@ -86,7 +84,7 @@ class MembershipsServiceTest {
 
     @Test
     public void shouldFailToCreateMembershipWhenMembershipsIsNull() {
-        //noinspection DataFlowIssue
+        // noinspection DataFlowIssue
         assertThrows(NullPointerException.class,
                 () -> membershipsService.assignRoleToMembership(null));
     }
@@ -98,7 +96,7 @@ class MembershipsServiceTest {
                 .thenReturn(Optional.ofNullable(expectedMembership.getRole()));
         when(teamsService
                 .isUserPartOfTeam(expectedMembership.getUserId(), expectedMembership.getTeamId()))
-                .thenReturn(true);
+                        .thenReturn(true);
         when(membershipRepository.findByUserIdAndTeamId(expectedMembership.getUserId(),
                 expectedMembership.getTeamId()))
                         .thenReturn(Optional.of(expectedMembership));

@@ -46,7 +46,7 @@ class RolesServiceTest {
 
     @Test
     public void shouldFailToCreateRoleWhenRoleIsNull() {
-        //noinspection DataFlowIssue
+        // noinspection DataFlowIssue
         assertThrows(NullPointerException.class,
                 () -> rolesService.createRole(null));
     }
@@ -105,9 +105,10 @@ class RolesServiceTest {
         Membership expectedMembership = DEFAULT_MEMBERSHIP();
         when(membershipRepository
                 .findByUserIdAndTeamId(expectedMembership.getUserId(), expectedMembership.getTeamId()))
-                .thenReturn(Optional.empty());
+                        .thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,
-                () -> rolesService.searchRole(expectedMembership.getUserId(), expectedMembership.getTeamId()));
+                () -> rolesService.searchRole(expectedMembership.getUserId(),
+                        expectedMembership.getTeamId()));
     }
 }

@@ -31,11 +31,13 @@ public class TeamsServiceImpl implements TeamsService {
     }
 
     @Override
-    public boolean isUserPartOfTeam(@NotNull UUID userId, @NotNull UUID teamId) throws ResourceNotFoundException {
+    public boolean isUserPartOfTeam(@NotNull UUID userId, @NotNull UUID teamId)
+            throws ResourceNotFoundException {
         if (userId == null || teamId == null) {
             throw new IllegalArgumentException();
         }
-        Team team = Optional.ofNullable(getTeam(teamId)).orElseThrow(() -> new ResourceNotFoundException(Team.class, teamId));
+        Team team = Optional.ofNullable(getTeam(teamId))
+                .orElseThrow(() -> new ResourceNotFoundException(Team.class, teamId));
         return team.getTeamLeadId() == userId || team.getTeamMemberIds().contains(userId);
     }
 }

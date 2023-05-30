@@ -32,7 +32,8 @@ public class MembershipsServiceImpl implements MembershipsService {
     @Autowired
     public MembershipsServiceImpl(
             MembershipRepository membershipRepository,
-            RoleRepository roleRepository, TeamsService teamsService) {
+            RoleRepository roleRepository,
+            TeamsService teamsService) {
         this.membershipRepository = membershipRepository;
         this.roleRepository = roleRepository;
         this.teamsService = teamsService;
