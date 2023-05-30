@@ -2,9 +2,6 @@ package com.ecore.roles.service;
 
 import com.ecore.roles.client.TeamsClient;
 import com.ecore.roles.client.model.Team;
-import com.ecore.roles.client.model.User;
-import com.ecore.roles.exception.ResourceExistsException;
-import com.ecore.roles.exception.ResourceNotFoundException;
 import com.ecore.roles.service.impl.TeamsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

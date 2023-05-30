@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
 
 @Log4j2
@@ -40,27 +39,28 @@ public class MembershipsServiceImpl implements MembershipsService {
     }
 
     @Override
-    public Membership assignRoleToMembership(@NonNull Membership m) {
-        UUID roleId = ofNullable(m.getRole()).map(Role::getId)
+    public Membership assignRoleToMembership(@NonNull Membership membership) {
+        UUID roleId = ofNullable(membership.getRole()).map(Role::getId)
                 .orElseThrow(() -> new InvalidArgumentException(Role.class));
+        UUID userId = membership.getUserId();
+        UUID teamId = membership.getTeamId();
 
         roleRepository.findById(roleId).orElseThrow(() -> new ResourceNotFoundException(Role.class, roleId));
 
-        if (!teamsService.isUserPartOfTeam(m.getUserId(), m.getTeamId())) {
+        if (!teamsService.isUserPartOfTeam(userId, teamId)) {
             throw new InvalidArgumentException(
                     "Invalid 'Membership' object. The provided user doesn't belong to the provided team.");
         }
 
-        if (membershipRepository.findByUserIdAndTeamId(m.getUserId(), m.getTeamId())
-                .isPresent()) {
+        if (membershipRepository.findByUserIdAndTeamId(userId, teamId).isPresent()) {
             throw new ResourceExistsException(Membership.class);
         }
 
-        return membershipRepository.save(m);
+        return membershipRepository.save(membership);
     }
 
     @Override
-    public List<Membership> getMemberships(@NonNull UUID rid) {
-        return membershipRepository.findByRoleId(rid);
+    public List<Membership> getMemberships(@NonNull UUID roleId) {
+        return membershipRepository.findByRoleId(roleId);
     }
 }

@@ -2,7 +2,6 @@ package com.ecore.roles.service.impl;
 
 import com.ecore.roles.client.TeamsClient;
 import com.ecore.roles.client.model.Team;
-import com.ecore.roles.exception.InvalidArgumentException;
 import com.ecore.roles.exception.ResourceNotFoundException;
 import com.ecore.roles.service.TeamsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static java.lang.String.format;
 
 @Service
 public class TeamsServiceImpl implements TeamsService {

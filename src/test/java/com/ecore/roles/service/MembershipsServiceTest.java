@@ -61,6 +61,7 @@ class MembershipsServiceTest {
 
     @Test
     public void shouldFailToCreateMembershipWhenMembershipsIsNull() {
+        //noinspection DataFlowIssue
         assertThrows(NullPointerException.class,
                 () -> membershipsService.assignRoleToMembership(null));
     }
@@ -103,6 +104,7 @@ class MembershipsServiceTest {
 
     @Test
     public void shouldFailToGetMembershipsWhenRoleIdIsNull() {
+        //noinspection DataFlowIssue
         assertThrows(NullPointerException.class,
                 () -> membershipsService.getMemberships(null));
     }
