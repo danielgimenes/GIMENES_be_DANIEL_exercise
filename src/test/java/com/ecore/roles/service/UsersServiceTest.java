@@ -11,9 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static com.ecore.roles.utils.TestData.GIANNI_USER;
-import static com.ecore.roles.utils.TestData.UUID_1;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
+
+import static com.ecore.roles.utils.TestData.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,5 +34,34 @@ class UsersServiceTest {
                         .body(gianniUser));
 
         assertNotNull(usersService.getUser(UUID_1));
+    }
+
+    @Test
+    void shouldFailToGetUserWhenUserDoesNotExist() {
+        when(usersClient.getUser(UUID_1))
+                .thenReturn(ResponseEntity.notFound().build());
+
+        assertNull(usersService.getUser(UUID_1));
+    }
+
+    @Test
+    void shouldGetUsers() {
+        List<User> users = List.of(GIANNI_USER(), SECOND_USER());
+        when(usersClient.getUsers())
+                .thenReturn(ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(users));
+
+        assertEquals(users, usersService.getUsers());
+    }
+
+    @Test
+    void shouldGetUsersWhenThereAreNone() {
+        when(usersClient.getUsers())
+                .thenReturn(ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(null));
+
+        assertNull(usersService.getUsers());
     }
 }

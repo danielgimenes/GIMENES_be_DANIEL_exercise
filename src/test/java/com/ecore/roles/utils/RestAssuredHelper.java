@@ -87,7 +87,7 @@ public class RestAssuredHelper {
 
     public static class EcoreValidatableResponse {
 
-        ValidatableResponse validatableResponse;
+        final ValidatableResponse validatableResponse;
 
         public EcoreValidatableResponse(ValidatableResponse validatableResponse) {
             this.validatableResponse = validatableResponse;

@@ -88,7 +88,7 @@ public class MembershipsApiTests {
     }
 
     @Test
-    void shouldFailToCreateRoleMembershipWhenTeamIdISNull() {
+    void shouldFailToCreateRoleMembershipWhenTeamIdIsNull() {
         Membership expectedMembership = DEFAULT_MEMBERSHIP();
         expectedMembership.setTeamId(null);
 
