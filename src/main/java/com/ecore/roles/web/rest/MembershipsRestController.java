@@ -9,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.ecore.roles.web.dto.MembershipDto.fromModel;
 
@@ -40,16 +40,10 @@ public class MembershipsRestController implements MembershipsApi {
             produces = {"application/json"})
     public ResponseEntity<List<MembershipDto>> getMemberships(
             @NotNull @RequestParam UUID roleId) {
-
-        List<Membership> memberships = membershipsService.getMemberships(roleId);
-
-        List<MembershipDto> newMembershipDto = new ArrayList<>();
-
-        for (Membership membership : memberships) {
-            MembershipDto membershipDto = fromModel(membership);
-            newMembershipDto.add(membershipDto);
-        }
-
+        List<MembershipDto> newMembershipDto =
+                membershipsService.getMemberships(roleId).stream()
+                        .map(MembershipDto::fromModel)
+                        .collect(Collectors.toList());
         return ResponseEntity
                 .status(200)
                 .body(newMembershipDto);
