@@ -6,6 +6,7 @@ import com.ecore.roles.model.Membership;
 import com.ecore.roles.model.Role;
 import org.assertj.core.util.Lists;
 
+import java.util.List;
 import java.util.UUID;
 
 public class TestData {
@@ -20,6 +21,8 @@ public class TestData {
     public static final UUID TESTER_ROLE_UUID = UUID.fromString("37969e22-26f3-11ec-9621-0242ac130002");
 
     public static final UUID GIANNI_USER_UUID = UUID.fromString("fd282131-d8aa-4819-b0c8-d9e0bfb1b75c");
+
+    public static final UUID SECOND_USER_UUID = UUID.fromString("0eb4fd22-38c5-4d27-a09a-7feece75d6e8");
 
     public static final UUID ORDINARY_CORAL_LYNX_TEAM_UUID =
             UUID.fromString("7676a4bf-adfe-415c-941b-1739af07039b");
@@ -65,6 +68,14 @@ public class TestData {
         return ORDINARY_CORAL_LYNX_TEAM(true);
     }
 
+    public static Team SECOND_TEAM() {
+        return Team.builder()
+                .id(ORDINARY_CORAL_LYNX_TEAM_UUID)
+                .teamLeadId(SECOND_USER_UUID)
+                .teamMemberIds(List.of(UUID_2, UUID_3))
+                .name("Another Team").build();
+    }
+
     public static User GIANNI_USER(boolean full) {
         User user = User.builder()
                 .id(GIANNI_USER_UUID)
@@ -76,6 +87,14 @@ public class TestData {
             user.setLocation("Brakusstad");
         }
         return user;
+    }
+
+    public static User SECOND_USER() {
+        return User.builder()
+                .id(SECOND_USER_UUID)
+                .displayName("somebody")
+                .firstName("Some")
+                .lastName("Body").build();
     }
 
     public static User GIANNI_USER() {
