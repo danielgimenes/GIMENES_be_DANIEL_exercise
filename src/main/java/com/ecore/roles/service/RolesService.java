@@ -1,5 +1,6 @@
 package com.ecore.roles.service;
 
+import com.ecore.roles.exception.ResourceNotFoundException;
 import com.ecore.roles.model.Role;
 
 import java.util.List;
@@ -7,10 +8,12 @@ import java.util.UUID;
 
 public interface RolesService {
 
-    Role CreateRole(Role role);
+    Role createRole(Role role);
 
-    Role GetRole(UUID id);
+    Role getRole(UUID id);
 
-    List<Role> GetRoles();
+    List<Role> getRoles();
+
+    Role searchRole(UUID userId, UUID teamId) throws ResourceNotFoundException;
 
 }
